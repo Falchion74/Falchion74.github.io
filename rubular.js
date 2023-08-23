@@ -2143,7 +2143,7 @@ var Rubular = {
             var i = ++this.lastMessageSent;
             this.pendingRequest && this.pendingRequest.transport && 4 != this.pendingRequest.transport.readyState && (this.pendingRequest.transport.abort(),
             this.pendingRequest = null),
-            this.pendingRequest = new Ajax.Request("http://localhost:8080/rubular.com:443/regex/do_test?message_id=" + i,Object.extend(this.defaultRequestHeaders(), {
+            this.pendingRequest = new Ajax.Request("https://rubular.com/regex/do_test?message_id=" + i,Object.extend(this.defaultRequestHeaders(), {
                 parameters: t,
                 on0: this.onRegexParseError.bind(this, i),
                 onFailure: this.onRegexParseError.bind(this, i)
