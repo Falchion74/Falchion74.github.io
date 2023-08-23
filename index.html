@@ -1,1 +1,181 @@
-<h1>Hello, you should not be here!</h1>
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Ruby regular expression editor</title>
+		<meta name="keywords" content="regular expression, regex, regexp, ruby, rails, programming, development, editor, tester, tool">
+		<meta name="description" content="Ruby-based regular expression editor/tester">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Rubular">
+		<meta property="og:description" content="Ruby-based regular expression editor/tester">
+		<meta property="og:url" content="https://Falchion74.github.io">
+		<link rel="stylesheet" media="screen" href="rubular.css">
+	</head>
+	<body>
+		<div id="main">
+			<h1>Rubular</h1>
+			<h2>a Ruby regular expression editor</h2>
+			<h3>Regex quick reference</h3>
+			<div id="quickref">
+				<div style="float:left">
+					<table>
+						<tbody><tr>
+								<td><code>[abc]</code></td>
+								<td>A single character of: a, b, or c</td>
+							</tr>
+							<tr>
+								<td><code>[^abc]</code></td>
+								<td>Any single character except: a, b, or c</td>
+							</tr>
+							<tr>
+								<td><code>[a-z]</code></td>
+								<td>Any single character in the range a-z</td>
+							</tr>
+							<tr>
+								<td><code>[a-zA-Z]</code></td>
+								<td>Any single character in the range a-z or A-Z</td>
+							</tr>
+							<tr>
+								<td><code>^</code></td>
+								<td>Start of line</td>
+							</tr>
+							<tr>
+								<td><code>$</code></td>
+								<td>End of line</td>
+							</tr>
+							<tr>
+								<td><code>\A</code></td>
+								<td>Start of string</td>
+							</tr>
+							<tr>
+								<td><code>\z</code></td>
+								<td>End of string</td>
+							</tr>
+					</tbody></table>
+				</div>
+				<div style="float:left">
+					<table>
+						<tbody><tr>
+								<td><code>.</code></td>
+								<td>Any single character</td>
+							</tr>
+							<tr>
+								<td><code>\s</code></td>
+								<td>Any whitespace character</td>
+							</tr>
+							<tr>
+								<td><code>\S</code></td>
+								<td>Any non-whitespace character</td>
+							</tr>
+							<tr>
+								<td><code>\d</code></td>
+								<td>Any digit</td>
+							</tr>
+							<tr>
+								<td><code>\D</code></td>
+								<td>Any non-digit</td>
+							</tr>
+							<tr>
+								<td><code>\w</code></td>
+								<td>Any word character (letter, number, underscore)</td>
+							</tr>
+							<tr>
+								<td><code>\W</code></td>
+								<td>Any non-word character</td>
+							</tr>
+							<tr>
+								<td><code>\b</code></td>
+								<td>Any word boundary</td>
+							</tr>
+					</tbody></table>
+				</div>
+				<table>
+					<tbody><tr>
+							<td><code>(...)</code></td>
+							<td>Capture everything enclosed</td>
+						</tr>
+						<tr>
+							<td><code>(a|b)</code></td>
+							<td>a or b</td>
+						</tr>
+						<tr>
+							<td><code>a?</code></td>
+							<td>Zero or one of a</td>
+						</tr>
+						<tr>
+							<td><code>a*</code></td>
+							<td>Zero or more of a</td>
+						</tr>
+						<tr>
+							<td><code>a+</code></td>
+							<td>One or more of a</td>
+						</tr>
+						<tr>
+							<td><code>a{3}</code></td>
+							<td>Exactly 3 of a</td>
+						</tr>
+						<tr>
+							<td><code>a{3,}</code></td>
+							<td>3 or more of a</td>
+						</tr>
+						<tr>
+							<td><code>a{3,6}</code></td>
+							<td>Between 3 and 6 of a</td>
+						</tr>
+				</tbody></table>
+				<div id="regex_options">
+					<p>
+						options:
+						<span class="regex_option"><code>i</code> case insensitive</span>
+						<span class="regex_option"><code>m</code> make dot match newlines</span>
+						<span class="regex_option"><code>x</code> ignore whitespace in regex</span>
+						<span class="regex_option"><code>o</code> perform #{...} substitutions only once</span>
+					</p>
+				</div>
+			</div>
+			<div id="inner">
+				<div id="ajax_loader_wrapper" style="display:none">
+					<img alt="Loading..." src="ajax-loader.gif">
+				</div>
+				<div id="form_wrapper">
+					<form id="test_form" action="https://rubular.com/regex/do_test" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
+						<label id="regex_label" for="regex">Your regular expression:</label><br>
+						<span class="slash">/</span><textarea name="regex" id="regex" cols="80" rows="1"></textarea><span class="slash">/</span><input type="text" name="options" id="options" aria-label="Regex options"><br>
+						<div id="test_and_result">
+							<div id="test_string">
+								<div id="inner_test_string_wrapper">
+									<label id="test_label" for="test">Your test string:</label>
+									<textarea name="test" id="test" cols="56" rows="10" style="width: 98%;height: 500px;"></textarea>
+									<span id="test_settings">
+										<label>Wrap words <input type="checkbox" name="word_wrap" id="word_wrap" value="1" checked="checked"></label>
+										<label>Show invisibles <input type="checkbox" name="show_invisibles" id="show_invisibles" value="1"></label>
+									</span>
+								</div>
+							</div>
+							<div id="result">
+								<div class="notice" id="start_instructions">
+									Rubular is a Ruby-based regular expression editor. It's a handy way to test regular expressions as you write them.<br><br>
+									To start, enter a regular expression and a test string. Or you can <a href="#" onclick="Rubular.example(); return false;">try an example</a>.
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div id="ajax_note" style="display:none"></div>
+				<div class="form_controls">
+					<a href="#" onclick="Rubular.makePermalink(); return false;">make permalink</a>
+					<a href="#" onclick="Rubular.clearFields(); return false;">clear fields</a>
+				</div>
+			</div>
+			
+
+
+		</div>
+		<script src="rubular.js"></script>
+
+
+
+
+
+	</body>
+</html>
+
